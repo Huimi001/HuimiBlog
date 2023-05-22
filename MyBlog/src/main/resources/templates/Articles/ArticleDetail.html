@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+    <base href="<%=basePath%>">
+    
+    <title>文章详情页</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+  .fakeimg {
+  	  width:250px;
+      height: 190px;
+  }
+  .setbg{
+	  background:url(/img/top.jpg);
+	  color:white;
+  }
+  .setbg2{
+	  background-color:yellow;
+  }
+  .setbg3{
+	  background-color:lightblue;
+  }
+  .setbg4{
+	  background-color:lightgray;
+  }
+  .biankuang
+  {
+  	  border:1px solid black;
+  }
+   body{font-family:"黑体"}
+  </style>
+  </head>
+  
+  <body class="setbg3">
+  	<div th:text="${msg}" id="msg" style="display:none"></div>
+ 	<div th:replace="~{layout/fragment :: header}"></div>
+	<div class="container setbg3" style="margin-top:30px">
+	  <div class="row">
+	    <div class="col-sm-4">
+	      <h2>博主简介</h2>
+	      <div class="fakeimg">
+	      	<img src="/img/mine.png" width="250" height="190" />
+	      </div>
+	      <p>Huimi</p>
+	      <p>DigimonFan</p>
+	      <h3>友情链接</h3>
+	      <ul class="nav nav-pills flex-column">
+	        <li class="nav-item">
+	          <a class="nav-link active" href="#">财神爷的博客</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link list-group-item-success" href="#">Van之旭的博客</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link list-group-item-success" href="#">江龙的博客</a>
+	        </li>
+	      </ul>
+	      <hr class="d-sm-none">
+	    </div>
+	    <div class="col-sm-8">
+		    
+		    <div class="container">
+		    	<h1 th:text="${article.newsTitle}"></h1>
+		    	<p th:utext="${article.createDate}"></p>
+		     	<blockquote class="blockquote" th:utext="${article.Content}"></blockquote>
+	     	</div>
+	     	<br/>
+	     	<br/>
+	     	<div id="waypoint" class="m-margin- animated fadeIn" >
+			  <div class="ui container m-opacity box-shadow-max">
+			    <div  class="ui bottom attached segment  setbg3">
+			      <!--评论区域列表-->
+			      <div id="comment-container"  class="ui teal segment">
+			        <div th:fragment="commentList">
+			          <div class="ui threaded comments" style="max-width: 100%;">
+			            <h3 class="ui dividing header">评论</h3>
+			            <div class="comment" th:each="c,state:${comments}">
+			             
+			              <div class="content">
+			                <a class="author" >
+			                  <span th:text="${c.commentName}">小红</span>
+			                </a>
+			                <div class="metadata">
+			                  <span class="date" th:text="${c.createDate}"></span>
+			                </div>
+			                <div class="text" th:text="${c.commentContent}">
+			                </div>
+			                <div class="actions">
+			                  <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${c.commentID},data-commentnickname=${c.commentName}" onclick="reply(this)">回复</a>
+			                </div>
+			              </div>
+			              <!--子集评论-->
+			              <div class="comments" th:if="${#arrays.length(c.replyComments)}>0">
+			                <div class="comment" th:each="reply : ${c.replyComments}">
+			                  <div class="content">
+			                    <a class="author" >
+			                      <span th:text="${reply.commentName}"></span>
+			                      <span th:text="|@ ${reply.parentName}|" class="m-teal"></span>
+			                    </a>
+			                    <div class="metadata">
+			                      <span class="date" th:text="${reply.createDate}"></span>
+			                    </div>
+			                    <div class="text" th:text="${reply.commentContent}">
+			                    </div>
+			                    <div class="actions">
+			                      <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.commentID},data-commentnickname=${reply.commentName}" onclick="reply(this)">回复</a>
+			                    </div>
+			                  </div>
+			                </div>
+			              </div>
+			              
+			            </div>
+			 
+			          </div>
+			        </div>
+			      </div>
+			      <br/><br/>
+			      <div id="comment-form" class="ui form">
+			        <input type="hidden" name="parentComment.id" value="-1">
+			        
+			        <form th:action="@{/addComment}" method="post">
+			        <div class="field">
+			          <div class="field m-mobile-wide m-margin-bottom-small">
+			            <div class="ui left icon input">
+			              <i class="user icon"></i>
+			              <input type="text" name="commentName" placeholder="请输入昵称">
+			            </div>
+			          </div>
+			          <div class="field m-mobile-wide m-margin-bottom-small">
+			            <div class="ui left icon input">
+			              <i class="mail icon"></i>
+			              <input disabled="disabled" type="text" name="createDate" id="comentcreateDate" placeholder="评论时间">
+			            </div>
+			          </div>
+			          <div class="field m-mobile-wide m-margin-bottom-small">
+			            <div class="ui left icon input">
+			              <i class="user icon"></i>
+			              <input type="text" name="newsID" id="newsId" th:value="${article.newsId}" placeholder="文章编号">
+			            </div>
+			          </div>
+			          <div class="field m-mobile-wide m-margin-bottom-small">
+			            <div class="ui left icon input">
+			              <i class="user icon"></i>
+			              <input type="text" name="parentName" id="parentName" placeholder="回复给">
+			            </div>
+			          </div>
+			          <div class="field m-mobile-wide m-margin-bottom-small">
+			            <div class="ui left icon input">
+			              <i class="user icon"></i>
+			              <input type="text" name="parentID" id="parentID" placeholder="被回复者ID">
+			            </div>
+			          </div>
+			          <textarea name="commentContent" placeholder="请输入评论信息..."></textarea>
+			          <div align="center">
+						  <input type="submit" class="ui teal button m-mobile-wide" value="发表评论"/>
+					  </div>
+			       	 </div>
+			        </form>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		    
+		</div>
+	  </div>
+	</div>
+	<div th:replace="~{layout/fragment :: footer}"></div>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+	 
+	<script th:inline="javascript">
+	    //评论表单验证
+	    $('.ui.form').form({
+	        fields: {
+	            title: {
+	                identifier: 'commentContent',
+	                rules: [{
+	                    type: 'empty',
+	                    prompt: '请输入评论内容'
+	                }
+	                ]
+	            },
+	            content: {
+	                identifier: 'commentName',
+	                rules: [{
+	                    type: 'empty',
+	                    prompt: '请输入你的大名'
+	                }]
+	            }
+	        }
+	    });
+	
+	    function reply(obj) {
+	        var commentId = $(obj).data('commentid');
+	        var commentNickname = $(obj).data('commentnickname');
+	        var oText1=document.getElementById('parentID');
+	        var oText2=document.getElementById('parentName');
+		    oText1.value=commentId;
+		    oText2.value=commentNickname;
+	    }
+	 
+	    $(function () {
+	        $("#comment-container").load(/*[[@{/comment}]]*/"comment/");
+	    });
+	 
+	    $('#commentpost-btn').click(function () {
+	        var boo = $('.ui.form').form('validate form');
+	        if (boo) {
+	            console.log('校验成功');
+	            postData();
+	        } else {
+	            console.log('校验失败');
+	        }
+	    });
+	 
+	 
+	    function clearContent() {
+	        $("[name='nickname']").val('');
+	        $("[name='email']").val('');
+	        $("[name='content']").val('');
+	        $("[name='parentComment.id']").val(-1);
+	        $("[name='content']").attr("placeholder", "请输入评论信息...");
+	    }
+	</script>
+  </body>
+   <script>
+	Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "H+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+	window.onload=function()
+	{
+		var time1 = new Date().Format("yyyy-MM-dd HH:mm:ss");
+	    var oText=document.getElementById('comentcreateDate');
+	    oText.value=time1;//给文本框赋值并显示
+	}
+  </script>
+  <script type="text/javascript">
+		$(document).ready(function(){
+	        //alert("sssss");
+	        // var msg = document.getElementById("msg");
+	        // var message = msg.text;
+	        var message2=$("#msg").html();
+	        if(message2!="") {
+	            alert(message2)
+	        }
+	    })
+	</script>
+</html>

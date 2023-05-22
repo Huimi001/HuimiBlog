@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <base href="<%=basePath%>">
+  <title>搜索结果</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+  .fakeimg {
+  	  width:250px;
+      height: 190px;
+  }
+  .setbg{
+	  background:url(/img/top.jpg);
+	  color:white;
+  }
+  .setbg2{
+	  background-color:yellow;
+  }
+  .setbg3{
+	  background-color:lightblue;
+  }
+  .setbg4{
+	  background-color:lightgray;
+  }
+  body{font-family:"黑体"}
+  </style>
+</head>
+<body class="setbg3">
+<div th:text="${msg}" id="msg" style="display:none"></div>
+<div th:replace="~{layout/fragment1 :: header1}"></div>
+
+<div class="container setbg3" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>博主简介</h2>
+      <div class="fakeimg">
+      	<img src="/img/mine.png" width="250" height="190" />
+      </div>
+      <p>Huimi</p>
+      <p>DigimonFan</p>
+      <h3>友情链接</h3>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">财神爷的博客</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link list-group-item-success" href="#">Van之旭的博客</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link list-group-item-success" href="#">江龙的博客</a>
+        </li>
+      </ul>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+	    <table class="table">
+			<tr>
+				<th>文章编号</th>
+				<th>文章标题</th>
+				<th>文章类型</th>
+				<th>创建时间</th>
+				<th>操作</th>
+			</tr>
+			
+			
+			<tr th:each="article,state:${list}">
+				<td th:text="${state.count}"></td>
+				<td th:text="${article.newsTitle}"></td>
+				<td th:text="${article.type.typename}"></td>
+				<td th:text="${article.createDate}"></td>
+				<td><a th:href="@{articledetail} + '?newsId=' + ${article.newsId}">查看</a></td>
+			</tr>
+		</table>
+	</div>
+  </div>
+</div>
+
+<div th:replace="~{layout/fragment :: footer}"></div>
+<script type="text/javascript">
+		$(document).ready(function(){
+	        //alert("sssss");
+	        // var msg = document.getElementById("msg");
+	        // var message = msg.text;
+	        var message2=$("#msg").html();
+	        if(message2!="") {
+	            alert(message2)
+	        }
+	    })
+	</script>
+</body>
+</html>

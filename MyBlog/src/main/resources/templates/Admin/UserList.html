@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <base href="<%=basePath%>">
+  <title>文章列表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+  .fakeimg {
+  	  width:250px;
+      height: 190px;
+  }
+  .setbg{
+	  background:url(/img/top.jpg);
+	  color:white;
+  }
+  .setbg2{
+	  background-color:yellow;
+  }
+  .setbg3{
+	  background-color:lightblue;
+  }
+  .setbg4{
+	  background-color:lightgray;
+  }
+  body{font-family:"黑体"}
+  </style>
+</head>
+<body class="setbg3">
+<div th:text="${msg}" id="msg" style="display:none"></div>
+<div th:replace="~{layout/fragmentadmin :: header}"></div>
+
+<div class="container setbg3" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>博主简介</h2>
+      <div class="fakeimg">
+      	<img src="/img/mine.png" width="250" height="190" />
+      </div>
+      <p>Huimi</p>
+      <p>DigimonFan</p>
+      <h3>友情链接</h3>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">财神爷的博客</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link list-group-item-success" href="#">Van之旭的博客</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link list-group-item-success" href="#">江龙的博客</a>
+        </li>
+      </ul>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+	    <table class="table">
+			<tr>
+				<th>用户编号</th>
+				<th>用户名</th>
+				<th>全名</th>
+				<th>账号状态</th>
+				<th>操作</th>
+				<th>操作</th>
+				<th>操作</th>
+				<th>操作</th>
+			</tr>
+			<tr th:each="user,state:${list}">
+				<td th:text="${state.count}"></td>
+				<td th:text="${user.userName}"></td>
+				<td th:text="${user.fullName}"></td>
+				<td th:text="${user.enabled}"></td>
+				<td><a th:href="@{usermodify} + '?userId= ' + ${user.userId}">修改</a></td>
+				<td><a th:href="@{useropen} + '?userId= ' + ${user.userId}">启用</a></td>
+				<td><a th:href="@{rightchange} + '?userId=' + ${user.userId}">封禁</a></td>
+				<td><a th:href="@{userdelete} + '?userId= ' + ${user.userId}">删除</a></td>
+			</tr>
+		</table>
+		<button type="button" class="btn btn-primary btn-lg btn-block"><a th:href="@{/addUser}" class="list-group-item active">添加用户</a></button>
+	</div>
+  </div>
+</div>
+
+<div th:replace="~{layout/fragment :: footer}"></div>
+<script type="text/javascript">
+		$(document).ready(function(){
+	        //alert("sssss");
+	        // var msg = document.getElementById("msg");
+	        // var message = msg.text;
+	        var message2=$("#msg").html();
+	        if(message2!="") {
+	            alert(message2)
+	        }
+	    })
+	</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+    <base href="<%=basePath%>">
+    <title>登陆</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  	<style>
+  .fakeimg {
+      height: 200px;
+      background: #aaa;
+  }
+  .setbg{
+	  background:url(/img/top.jpg);
+	  color:white;
+  }
+  .setbg2{
+	  background-color:yellow;
+  }
+  .setbg3{
+	  background-color:lightblue;
+  }
+  .setbg4{
+	  background-color:lightgray;
+  }
+  .top
+  {
+  position:relative;
+  	top:10px;
+  }
+  body{font-family:"黑体"}
+  </style>
+  </head>
+  
+  <body class="setbg3">
+  <div th:text="${msg}" id="msg" style="display:none"></div>
+  <div  class="jumbotron text-center setbg" style="margin-bottom:0">
+	  <h1>Huimi Blog</h1>
+	  <p>Be Yourself</p> 
+  </div>
+   <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<a class="navbar-brand" th:href="@{/index}">回到首页</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</nav>
+    <h2 align="center">用户登陆</h2>
+	<div class="top">
+		  <form th:action="@{/Userlogin}" method="post" class="top">
+		    <div class="form-group" align="center">
+		      <label for="usr">用户名:</label>
+		      <input type="text" name="userName" id="userName"/>
+		    </div>
+		    <div class="form-group" align="center">
+		      <label for="pwd">密码:</label>
+		      <input type="password" name="password" id="password"/>
+		    </div>
+		    <div class="form-check" align="center">
+		      <label class="form-check-label">
+		        <input class="form-check-input" type="checkbox"> 记住密码
+		      </label>
+		    </div>
+		    <div align="center">
+		    	<input type="submit" class="btn btn-primary" value="登录"/>
+		    </div>
+		  </form>
+	</div>
+	 <div th:replace="~{layout/fragment :: footer}"></div>
+  </body>
+   <script type="text/javascript">
+		$(document).ready(function(){
+	        //alert("sssss");
+	        // var msg = document.getElementById("msg");
+	        // var message = msg.text;
+	        var message2=$("#msg").html();
+	        if(message2!="") {
+	            alert(message2)
+	        }
+	    })
+	</script>
+</html>
